@@ -6,7 +6,7 @@ import LoginPage from '../Pages/LoginPage'
 import ResetPassPage from '../Pages/ResetPassPage'
 import OtpPage from '../Pages/OtpPage'
 import NewPassPage from '../Pages/NewPassPage'
-
+import NotFound from '../Components/NotFound'
 
 export const userProfileContext = createContext();
 
@@ -27,6 +27,7 @@ export default function AppRouter() {
                   <Route path='/resetpassword' element={<ResetPassPage/>}/>
                   <Route path='/otp_reset' element={<OtpPage/>}/>
                   <Route path='/new_password' element={<NewPassPage/>}/>
+                  <Route path='*' element={<NotFound/>}/>
               </Routes>
             </userProfileContext.Provider>
         </BrowserRouter>

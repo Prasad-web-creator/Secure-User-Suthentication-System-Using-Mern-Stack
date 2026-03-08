@@ -6,7 +6,7 @@ import BrandBar from './BrandBar';
 
 export default function Login() {
 
-
+    const API = import.meta.env.VITE_API_URL;
     const {profileName,setProfileName} = useContext(userProfileContext);
 
     const navigate = useNavigate();
@@ -25,24 +25,25 @@ export default function Login() {
         const handleSubmit = async (e)=>{
             e.preventDefault();
             try{
-                const response = await fetch('http://127.0.0.1:8000/login/',{
+                const response = await fetch(`${API}/api/auth/login`,{
                         method:'POST',
                         headers:{"Content-Type":"application/json"},
                         body: JSON.stringify(user)
                     })
     
-                if (!response.ok) alert("Server connection failed")
-    
                 const data = await response.json()
-    
-                alert(data.message||data.error);
 
-                if (data.message) navigate('/')
+                alert(data.message)
 
-                localStorage.setItem('profileName',data.username || 'login')
-                const Uname = localStorage.getItem('profileName');
-                setProfileName(Uname);
-    
+                if(data.message!=="Invalid Password" && data.message!=="User not Found"){
+
+                    localStorage.setItem('profileName',data.user.username || 'login')
+                    localStorage.setItem('token',data.token)
+                    const Uname = localStorage.getItem('profileName')
+                    setProfileName(Uname)
+                    navigate('/')
+                }
+
                 }catch(error){
                     alert("Server Could not Reached")
                 }

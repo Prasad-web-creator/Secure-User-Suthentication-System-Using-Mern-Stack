@@ -3,7 +3,8 @@ import {useNavigate} from 'react-router-dom'
 import BrandBar from './BrandBar';
 
 export default function Otp() {
-
+    
+    const API = import.meta.env.VITE_API_URL;
     const navigate = useNavigate();
 
     const [user,setUser] = useState({
@@ -19,17 +20,15 @@ export default function Otp() {
     const handleSubmit = async (e)=>{
         e.preventDefault();
         try{
-            const response = await fetch('http://127.0.0.1:8000/verify/',{
+            const response = await fetch(`${API}/api/auth/otpverify`,{
                     method:'POST',
                     headers:{"Content-Type":"application/json"},
                     body: JSON.stringify(user)
                 })
 
-            if (!response.ok) alert("Server connection failed")
-
             const data = await response.json()
 
-            alert(data.message||data.error);
+            alert(data.message);
 
             if (data.message) navigate('/new_password')
 

@@ -3,11 +3,12 @@ import {useNavigate} from 'react-router-dom'
 import BrandBar from './BrandBar';
 
 export default function Resetpass() {
-  const navigate = useNavigate();
-
-  const [user,setUser] = useState({
-          email : "",
-      })
+    
+    const navigate = useNavigate();
+    const API = import.meta.env.VITE_API_URL;
+    const [user,setUser] = useState({
+            email : "",
+        })
   
       const handleChange = (e)=>{
           const {name,value} = e.target;
@@ -17,7 +18,7 @@ export default function Resetpass() {
       const handleSubmit = async (e)=>{
           e.preventDefault();
           try{
-              const response = await fetch('http://127.0.0.1:8000/reset/',{
+              const response = await fetch(`${API}/api/auth/resetpassword`,{
                       method:'POST',
                       headers:{"Content-Type":"application/json"},
                       body: JSON.stringify(user)

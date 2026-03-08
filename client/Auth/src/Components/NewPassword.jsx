@@ -3,12 +3,12 @@ import {useNavigate} from 'react-router-dom'
 import BrandBar from './BrandBar';
 
 export default function NewPassword() {
-  const navigate = useNavigate();
-
-  const [user,setUser] = useState({
-        email:"",
-        password:""
-      })
+    const navigate = useNavigate();
+    const API = import.meta.env.VITE_API_URL;
+    const [user,setUser] = useState({
+            email:"",
+            password:""
+        })
   
       const handleChange = (e)=>{
           const {name,value} = e.target;
@@ -18,17 +18,17 @@ export default function NewPassword() {
       const handleSubmit = async (e)=>{
           e.preventDefault();
           try{
-              const response = await fetch('http://127.0.0.1:8000/change/',{
+              const response = await fetch(`${API}/api/auth/newpassword/`,{
                       method:'POST',
                       headers:{"Content-Type":"application/json"},
                       body: JSON.stringify(user)
                   })
   
-              if (!response.ok) alert("Server connection failed")
+            //   if (!response.ok) alert("Server connection failed")
   
               const data = await response.json()
   
-              alert(data.message||data.error);
+              alert(data.message);
 
               if (data.message) navigate('/')
   
