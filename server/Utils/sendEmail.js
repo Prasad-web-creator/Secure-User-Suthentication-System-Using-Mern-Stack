@@ -8,6 +8,7 @@ const sendEmail = async (to, subject, text) => {
       host:'smtp.gmail.com',
       port:465,
       secure:true,
+      family: 4,
       auth:{
         user:process.env.EMAIL_ADMIN,
         pass : process.env.EMAIL_PASSWORD
@@ -24,7 +25,6 @@ const sendEmail = async (to, subject, text) => {
       text:text
     })
 
-    console.log(info)
 
   } catch (err) {
     console.log("Email error:", err.message)
