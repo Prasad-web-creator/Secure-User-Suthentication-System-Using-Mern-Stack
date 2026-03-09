@@ -127,6 +127,10 @@ exports.resetPassword = (req,res)=>{
     try{
         const {email} = req.body
 
+        if(!email){
+            return res.status(400).json({message:"All fields are required"})
+        }
+
         const reset_otp = genOtp()
 
         reset_store[email] = reset_otp
@@ -136,7 +140,7 @@ exports.resetPassword = (req,res)=>{
             `Your OTP for reset password ${reset_otp}`
         )
 
-        return res.status(201).json({message:"Reset password otp is sent to your email "+reset_store.email})
+        return res.status(201).json({message:"Reset password otp is sent to your email"})
 
     }catch(err){
         return res.status(500).json({message:"Server Connection Failed"})

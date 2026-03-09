@@ -24,11 +24,11 @@ export default function Resetpass() {
                       body: JSON.stringify(user)
                   })
   
-              if (!response.ok) alert("Server connection failed")
-  
               const data = await response.json()
+
+              console.log(data)
   
-              alert(data.message||data.error);
+              alert(data.message);
 
               if (data.message) navigate('/otp_reset')
   

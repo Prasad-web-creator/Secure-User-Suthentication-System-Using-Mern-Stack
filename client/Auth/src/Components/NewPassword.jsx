@@ -24,8 +24,6 @@ export default function NewPassword() {
                       body: JSON.stringify(user)
                   })
   
-            //   if (!response.ok) alert("Server connection failed")
-  
               const data = await response.json()
   
               alert(data.message);
