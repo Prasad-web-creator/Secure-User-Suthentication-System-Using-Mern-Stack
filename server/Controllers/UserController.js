@@ -123,7 +123,7 @@ exports.login = async(req,res)=>{
 }
 
 
-exports.resetPassword = (req,res)=>{
+exports.resetPassword = async (req,res)=>{
     try{
         const {email} = req.body
 
@@ -135,12 +135,13 @@ exports.resetPassword = (req,res)=>{
 
         reset_store[email] = reset_otp
 
-        sentEmail(email,
+        const state = await sentEmail(email,
             "Reset password OTP for Mern-Auth",
             `Your OTP for reset password ${reset_otp}`
         )
 
-        return res.status(201).json({message:"Reset password otp is sent to your email"})
+        if(state) return res.status(201).json({message:"Reset password otp is sent to your email"})
+        else return res.status(201).json({message:"Failed to send OTP"})
 
     }catch(err){
         return res.status(500).json({message:"Server Connection Failed"})
