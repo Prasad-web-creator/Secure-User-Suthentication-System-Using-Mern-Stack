@@ -11,7 +11,7 @@ exports.register = async(req,res)=>{
     try{
         const {username,email,password,otp} = req.body
 
-        if(!username || !email || !password){
+        if(!username || !email || !password || !otp){
             return res.status(401).json({message:"All fields are required"})
         }
 
@@ -69,12 +69,17 @@ exports.getOtp = async (req,res)=>{
 
         otp_store[email] = gen_otp
         
-        await sentEmail(email,
+        const ok = await sentEmail(email,
             "Otp for your registration in mern-auth",
             `Your 6 digit OTP is ${gen_otp}`
         )
 
+        console.log(ok)
 
+        if(!ok){
+            return res.status(500).json({ message: "Failed to send OTP email" })
+        }
+        
         return res.status(201).json({message:"Otp is sent to your email"})
 
     }catch(err){
@@ -135,11 +140,15 @@ exports.resetPassword = async (req,res)=>{
 
         reset_store[email] = reset_otp
 
-        await sentEmail(email,
+        const ok = await sentEmail(email,
             "Reset password OTP for Mern-Auth",
             `Your OTP for reset password ${reset_otp}`
         )
 
+        if(!ok){
+            return res.status(500).json({ message: "Failed to send OTP email" })
+        }
+        
         return res.status(201).json({message:"Reset password otp is sent to your email"})
         
 
