@@ -61,6 +61,8 @@ exports.getOtp = async (req,res)=>{
     const {email} = req.body
     const gen_otp = genOtp()
 
+    console.log(email)
+
     if(!email){
         return res.status(201).json({message:"All fields are required"})
     }
@@ -73,8 +75,6 @@ exports.getOtp = async (req,res)=>{
             "Otp for your registration in mern-auth",
             `Your 6 digit OTP is ${gen_otp}`
         )
-
-        console.log(ok)
 
         if(!ok){
             return res.status(500).json({ message: "Failed to send OTP email" })
