@@ -1,37 +1,25 @@
-const nodemailer = require('nodemailer')
+const { Resend } = require('resend')
 require('dotenv').config()
 
 const sendEmail = async (to, subject, text) => {
+  const resend = new Resend(process.env.RESEND_API_KEY)
   try {
-    
-    const transporter = nodemailer.createTransport({
-      host: "smtp.gmail.com",
-      port: 587,
-      secure: false,
-      family: 4, 
-      auth: {
-        user: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASS
-      },
-      tls:{
-        rejectUnauthorized: false
-      }
-    })
+    const { data, error } = await resend.emails.send({
+      from: 'Acme <onboarding@resend.dev>', // Resend's default testing domain. In prod, they should verify their domain.
+      to: [to],
+      subject: subject,
+      html: `<p>${text}</p>`, // Resend handles text/html better.
+    });
 
-    
-    const mailOptions = {
-      from: process.env.EMAIL_USER,
-      to,
-      subject,
-      text,
+    if (error) {
+      console.log("Resend Email error:", error.message)
+      return false
     }
-
-    await transporter.sendMail(mailOptions)
 
     return true
 
   } catch (err) {
-    console.log("Email error:", err.message)
+    console.log("Email catch error:", err.message)
     return false
   }
 }
